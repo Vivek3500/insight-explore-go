@@ -76,14 +76,14 @@ export const careerFields: CareerField[] = [
       soft: ['Problem Solving', 'Analytical Thinking', 'Collaboration', 'Continuous Learning', 'Communication']
     },
     salaryRanges: {
-      entry: '$55,000 - $75,000',
-      mid: '$85,000 - $120,000',
-      senior: '$130,000 - $180,000+'
+      entry: '₹3,50,000 - ₹6,00,000',
+      mid: '₹8,00,000 - ₹15,00,000',
+      senior: '₹18,00,000 - ₹35,00,000+'
     },
     growthOutlook: {
       trend: 'Growing',
       percentage: '25%',
-      description: 'Strong growth expected due to digital transformation across all industries'
+      description: 'Strong growth driven by India\'s digital transformation and IT services expansion'
     }
   },
   {
@@ -119,14 +119,14 @@ export const careerFields: CareerField[] = [
       soft: ['Empathy', 'Communication', 'Critical Thinking', 'Stress Management', 'Attention to Detail']
     },
     salaryRanges: {
-      entry: '$45,000 - $65,000',
-      mid: '$75,000 - $95,000',
-      senior: '$110,000 - $150,000+'
+      entry: '₹3,00,000 - ₹5,00,000',
+      mid: '₹6,00,000 - ₹10,00,000',
+      senior: '₹12,00,000 - ₹20,00,000+'
     },
     growthOutlook: {
       trend: 'Growing',
       percentage: '16%',
-      description: 'Aging population and healthcare expansion driving sustained demand'
+      description: 'Growing healthcare infrastructure and medical tourism boosting sector demand'
     }
   },
   {
@@ -162,14 +162,14 @@ export const careerFields: CareerField[] = [
       soft: ['Analytical Thinking', 'Attention to Detail', 'Communication', 'Decision Making', 'Ethics']
     },
     salaryRanges: {
-      entry: '$50,000 - $70,000',
-      mid: '$80,000 - $110,000',
-      senior: '$125,000 - $200,000+'
+      entry: '₹3,50,000 - ₹6,00,000',
+      mid: '₹7,00,000 - ₹12,00,000',
+      senior: '₹15,00,000 - ₹30,00,000+'
     },
     growthOutlook: {
       trend: 'Stable',
       percentage: '8%',
-      description: 'Steady demand with technology automation changing some roles'
+      description: 'Steady growth in BFSI sector with fintech creating new opportunities'
     }
   },
   {
@@ -205,14 +205,14 @@ export const careerFields: CareerField[] = [
       soft: ['Patience', 'Communication', 'Creativity', 'Adaptability', 'Leadership']
     },
     salaryRanges: {
-      entry: '$40,000 - $55,000',
-      mid: '$60,000 - $75,000',
-      senior: '$85,000 - $110,000+'
+      entry: '₹2,50,000 - ₹4,50,000',
+      mid: '₹5,00,000 - ₹8,00,000',
+      senior: '₹9,00,000 - ₹15,00,000+'
     },
     growthOutlook: {
       trend: 'Stable',
       percentage: '5%',
-      description: 'Consistent demand with regional variations based on population'
+      description: 'NEP 2020 implementation and ed-tech growth creating steady opportunities'
     }
   },
   {
@@ -248,14 +248,14 @@ export const careerFields: CareerField[] = [
       soft: ['Creativity', 'Communication', 'Strategic Thinking', 'Collaboration', 'Adaptability']
     },
     salaryRanges: {
-      entry: '$42,000 - $58,000',
-      mid: '$65,000 - $85,000',
-      senior: '$95,000 - $140,000+'
+      entry: '₹3,00,000 - ₹5,00,000',
+      mid: '₹6,00,000 - ₹10,00,000',
+      senior: '₹12,00,000 - ₹20,00,000+'
     },
     growthOutlook: {
       trend: 'Growing',
       percentage: '10%',
-      description: 'Digital transformation driving demand for marketing expertise'
+      description: 'Digital India and D2C boom driving strong demand for marketing professionals'
     }
   },
   {
@@ -291,14 +291,14 @@ export const careerFields: CareerField[] = [
       soft: ['Problem Solving', 'Attention to Detail', 'Teamwork', 'Innovation', 'Communication']
     },
     salaryRanges: {
-      entry: '$60,000 - $75,000',
-      mid: '$85,000 - $105,000',
-      senior: '$120,000 - $160,000+'
+      entry: '₹3,50,000 - ₹6,00,000',
+      mid: '₹7,00,000 - ₹12,00,000',
+      senior: '₹15,00,000 - ₹25,00,000+'
     },
     growthOutlook: {
       trend: 'Stable',
       percentage: '7%',
-      description: 'Steady growth with specialization in renewable energy and automation'
+      description: 'Infrastructure development and Make in India driving consistent engineering demand'
     }
   }
 ];
