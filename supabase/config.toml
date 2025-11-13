@@ -1,0 +1,4 @@
+project_id = "oncnphlltabyplwgbvlt"
+
+[functions.scrape-jobs]
+verify_jwt = false
