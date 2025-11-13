@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Bookmark, Compass } from 'lucide-react';
+import { Bookmark, Compass, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -25,6 +25,16 @@ export const Navigation = () => {
             size="sm"
           >
             <Link to="/fields">Explore Fields</Link>
+          </Button>
+          <Button
+            variant={location.pathname === '/scraper' ? 'default' : 'ghost'}
+            asChild
+            size="sm"
+          >
+            <Link to="/scraper" className="flex items-center gap-2">
+              <Globe className="h-4 w-4" />
+              <span className="hidden sm:inline">Scraper</span>
+            </Link>
           </Button>
           <Button
             variant={location.pathname === '/bookmarks' ? 'default' : 'ghost'}

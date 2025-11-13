@@ -8,6 +8,7 @@ import Fields from "./pages/Fields";
 import FieldDetail from "./pages/FieldDetail";
 import Bookmarks from "./pages/Bookmarks";
 import Compare from "./pages/Compare";
+import Scraper from "./pages/Scraper";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/field/:fieldId" element={<FieldDetail />} />
           <Route path="/bookmarks" element={<Bookmarks />} />
           <Route path="/compare" element={<Compare />} />
+          <Route path="/scraper" element={<Scraper />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
