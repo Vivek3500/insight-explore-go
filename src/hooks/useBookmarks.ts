@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const BOOKMARKS_KEY = 'career-compass-bookmarks';
+const BOOKMARKS_KEY = 'hiresight-bookmarks';
 
 export const useBookmarks = () => {
   const [bookmarkedIds, setBookmarkedIds] = useState<string[]>([]);

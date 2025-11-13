@@ -1,10 +1,10 @@
-# CareerCompass - India Career Exploration Platform
+# HireSight - India Career Exploration Platform
 
 A modern, mobile-first web application designed to help Indian students and professionals explore career fields, compare options, and make informed career decisions.
 
 ## 🎯 Project Overview
 
-CareerCompass provides detailed insights into various career fields in India, including job roles, required skills, salary ranges (in INR), and growth outlook. The platform follows a streamlined three-step process: Select field → Get insights → Explore next steps.
+HireSight provides detailed insights into various career fields in India, including job roles, required skills, salary ranges (in INR), and growth outlook. The platform follows a streamlined three-step process: Select field → Get insights → Explore next steps.
 
 **Target Users**: Students, early professionals, and career explorers in India
 

@@ -14,7 +14,7 @@ export const Navigation = () => {
             <Compass className="h-5 w-5 text-primary-foreground" />
           </div>
           <span className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">
-            CareerCompass
+            HireSight
           </span>
         </Link>
 
