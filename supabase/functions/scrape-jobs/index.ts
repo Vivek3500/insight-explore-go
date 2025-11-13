@@ -12,10 +12,10 @@ serve(async (req) => {
 
   try {
     const { url } = await req.json();
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+    const GEMINI_API_KEY = Deno.env.get("Hiresight");
     
-    if (!LOVABLE_API_KEY) {
-      throw new Error("LOVABLE_API_KEY is not configured");
+    if (!GEMINI_API_KEY) {
+      throw new Error("Hiresight API key is not configured");
     }
 
     console.log('Fetching content from:', url);
@@ -29,28 +29,32 @@ serve(async (req) => {
     
     console.log('Sending to Gemini for extraction...');
     
-    // Use Gemini to extract structured data
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    const prompt = `You are a job data extraction specialist. Extract job listings from HTML content and return structured data in JSON format. 
+For each job, extract: title, company, location, salary (if available), experience required, skills required, and job description summary.
+Return an array of job objects. If no jobs are found, return an empty array.
+
+Extract job listings from this HTML content:
+
+${truncatedContent}
+
+Return only valid JSON with an array of job objects.`;
+    
+    // Use Gemini API directly
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${GEMINI_API_KEY}`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [
-          {
-            role: "system",
-            content: `You are a job data extraction specialist. Extract job listings from HTML content and return structured data in JSON format. 
-            For each job, extract: title, company, location, salary (if available), experience required, skills required, and job description summary.
-            Return an array of job objects. If no jobs are found, return an empty array.`
-          },
-          {
-            role: "user",
-            content: `Extract job listings from this HTML content:\n\n${truncatedContent}\n\nReturn only valid JSON with an array of job objects.`
-          }
-        ],
-        temperature: 0.3,
+        contents: [{
+          parts: [{
+            text: prompt
+          }]
+        }],
+        generationConfig: {
+          temperature: 0.3,
+          maxOutputTokens: 8192,
+        }
       }),
     });
 
@@ -61,19 +65,13 @@ serve(async (req) => {
           { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
       }
-      if (response.status === 402) {
-        return new Response(
-          JSON.stringify({ error: "Payment required. Please add credits to your Lovable AI workspace." }),
-          { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
-      }
       const errorText = await response.text();
-      console.error("AI gateway error:", response.status, errorText);
-      throw new Error("AI gateway error");
+      console.error("Gemini API error:", response.status, errorText);
+      throw new Error("Gemini API error");
     }
 
     const data = await response.json();
-    const extractedText = data.choices[0].message.content;
+    const extractedText = data.candidates[0].content.parts[0].text;
     
     console.log('Extraction complete');
     
