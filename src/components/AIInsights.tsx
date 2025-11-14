@@ -3,8 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { geminiService } from "@/services/geminiService";
-import { useGeminiAPI } from "@/hooks/useGeminiAPI";
+import { supabase } from "@/integrations/supabase/client";
 import {
   Sparkles,
   TrendingUp,
@@ -17,7 +16,6 @@ import {
   Loader2,
   AlertCircle,
 } from "lucide-react";
-import { Link } from "react-router-dom";
 
 interface CareerInsights {
   growthOutlook: {
@@ -55,7 +53,6 @@ export const AIInsights = ({ careerField }: AIInsightsProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>("");
   const { toast } = useToast();
-  const { isInitialized } = useGeminiAPI();
 
   const formatINR = (amount: number) => {
     return new Intl.NumberFormat("en-IN", {
@@ -77,21 +74,18 @@ export const AIInsights = ({ careerField }: AIInsightsProps) => {
   };
 
   const generateInsights = async () => {
-    if (!isInitialized) {
-      toast({
-        title: "API Key Required",
-        description: "Please configure your Gemini API key in Settings first.",
-        variant: "destructive",
-      });
-      return;
-    }
-
     setLoading(true);
     setError("");
 
     try {
-      const data = await geminiService.analyzeCareerField(careerField);
-      setInsights(data);
+      const { data, error: functionError } = await supabase.functions.invoke('analyze-career', {
+        body: { careerField, location: "India" }
+      });
+
+      if (functionError) throw functionError;
+      if (!data?.insights) throw new Error("No insights returned");
+      
+      setInsights(data.insights);
       toast({
         title: "Success!",
         description: "AI insights generated successfully.",
@@ -109,37 +103,18 @@ export const AIInsights = ({ careerField }: AIInsightsProps) => {
     }
   };
 
-  if (!isInitialized) {
-    return (
-      <Card className="border-primary/20">
-        <CardContent className="pt-6">
-          <div className="flex flex-col items-center gap-4 py-8 text-center">
-            <AlertCircle className="h-12 w-12 text-muted-foreground" />
-            <div>
-              <h3 className="text-lg font-semibold mb-2">AI Insights Not Configured</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                Configure your Gemini API key to unlock AI-powered career insights.
-              </p>
-              <Button asChild>
-                <Link to="/settings">Go to Settings</Link>
-              </Button>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
-
   if (!insights && !loading) {
     return (
       <Card className="border-primary/20">
         <CardContent className="pt-6">
-          <div className="flex flex-col items-center gap-4 py-8">
-            <Sparkles className="h-12 w-12 text-primary" />
-            <div className="text-center">
-              <h3 className="text-lg font-semibold mb-2">Generate AI Insights</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                Get real-time job market insights powered by Google Gemini AI
+          <div className="flex flex-col items-center gap-4 py-8 text-center">
+            <div className="p-4 rounded-full bg-gradient-hero">
+              <Sparkles className="h-8 w-8 text-primary-foreground" />
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold mb-2">AI-Powered Career Insights</h3>
+              <p className="text-sm text-muted-foreground mb-6 max-w-md">
+                Get real-time job market analysis powered by Google Gemini AI with live web search
               </p>
               <Button onClick={generateInsights} size="lg" className="gap-2">
                 <Sparkles className="h-4 w-4" />
@@ -156,11 +131,14 @@ export const AIInsights = ({ careerField }: AIInsightsProps) => {
     return (
       <Card className="border-primary/20">
         <CardContent className="pt-6">
-          <div className="flex flex-col items-center gap-4 py-12">
-            <Loader2 className="h-12 w-12 animate-spin text-primary" />
-            <p className="text-sm text-muted-foreground">
-              Analyzing job market data with AI...
-            </p>
+          <div className="flex flex-col items-center gap-4 py-12 text-center">
+            <Loader2 className="h-12 w-12 text-primary animate-spin" />
+            <div>
+              <h3 className="text-lg font-semibold mb-2">Analyzing Job Market Data</h3>
+              <p className="text-sm text-muted-foreground">
+                AI is searching the web and analyzing current trends...
+              </p>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -169,16 +147,15 @@ export const AIInsights = ({ careerField }: AIInsightsProps) => {
 
   if (error) {
     return (
-      <Card className="border-destructive/20">
+      <Card className="border-destructive/50">
         <CardContent className="pt-6">
-          <div className="flex flex-col items-center gap-4 py-8">
+          <div className="flex flex-col items-center gap-4 py-8 text-center">
             <AlertCircle className="h-12 w-12 text-destructive" />
-            <div className="text-center">
+            <div>
               <h3 className="text-lg font-semibold mb-2">Error Generating Insights</h3>
               <p className="text-sm text-muted-foreground mb-4">{error}</p>
-              <Button onClick={generateInsights} variant="outline" className="gap-2">
-                <RefreshCw className="h-4 w-4" />
-                Retry
+              <Button onClick={generateInsights} variant="outline">
+                Try Again
               </Button>
             </div>
           </div>
@@ -190,12 +167,9 @@ export const AIInsights = ({ careerField }: AIInsightsProps) => {
   if (!insights) return null;
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-500">
+    <div className="space-y-6 animate-in fade-in-50 duration-500">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Sparkles className="h-5 w-5 text-primary" />
-          <h2 className="text-xl font-semibold">AI-Powered Insights</h2>
-        </div>
+        <h2 className="text-2xl font-bold">AI-Generated Insights</h2>
         <Button onClick={generateInsights} variant="outline" size="sm" className="gap-2">
           <RefreshCw className="h-4 w-4" />
           Refresh
@@ -212,10 +186,10 @@ export const AIInsights = ({ careerField }: AIInsightsProps) => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <Badge className="mb-3">{insights.growthOutlook.trend}</Badge>
-            <p className="text-sm text-muted-foreground">
-              {insights.growthOutlook.description}
-            </p>
+            <Badge className="mb-3" variant={insights.growthOutlook.trend === "Growing" ? "default" : "secondary"}>
+              {insights.growthOutlook.trend}
+            </Badge>
+            <p className="text-sm text-muted-foreground">{insights.growthOutlook.description}</p>
           </CardContent>
         </Card>
 
@@ -226,7 +200,7 @@ export const AIInsights = ({ careerField }: AIInsightsProps) => {
               <DollarSign className="h-5 w-5 text-primary" />
               Salary Ranges
             </CardTitle>
-            <CardDescription>2-5 years experience</CardDescription>
+            <CardDescription>Average for 2-5 years experience</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
@@ -236,7 +210,7 @@ export const AIInsights = ({ careerField }: AIInsightsProps) => {
               </div>
               <div className="flex justify-between">
                 <span className="text-sm text-muted-foreground">Average:</span>
-                <span className="font-semibold">{formatINR(insights.salaryRanges.avg)}</span>
+                <span className="font-semibold text-primary">{formatINR(insights.salaryRanges.avg)}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-sm text-muted-foreground">Maximum:</span>
@@ -253,18 +227,14 @@ export const AIInsights = ({ careerField }: AIInsightsProps) => {
               <Briefcase className="h-5 w-5 text-primary" />
               Trending Job Roles
             </CardTitle>
+            <CardDescription>Current openings in the market</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {insights.jobRoles.map((role, index) => (
-                <div
-                  key={index}
-                  className="p-3 border rounded-lg hover:border-primary/50 transition-colors"
-                >
-                  <div className="font-medium text-sm mb-1">{role.title}</div>
-                  <div className="text-xs text-muted-foreground">
-                    ~{role.count.toLocaleString()} openings
-                  </div>
+                <div key={index} className="flex items-center justify-between p-3 bg-muted rounded-lg">
+                  <span className="font-medium text-sm">{role.title}</span>
+                  <Badge variant="secondary">{role.count.toLocaleString()}+ openings</Badge>
                 </div>
               ))}
             </div>
@@ -278,15 +248,12 @@ export const AIInsights = ({ careerField }: AIInsightsProps) => {
               <Wrench className="h-5 w-5 text-primary" />
               Technical Skills
             </CardTitle>
+            <CardDescription>Key technical competencies</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap gap-2">
               {insights.technicalSkills.map((skill, index) => (
-                <Badge
-                  key={index}
-                  variant="outline"
-                  className={getImportanceBadgeColor(skill.importance)}
-                >
+                <Badge key={index} variant="outline" className={getImportanceBadgeColor(skill.importance)}>
                   {skill.skill}
                 </Badge>
               ))}
@@ -301,15 +268,12 @@ export const AIInsights = ({ careerField }: AIInsightsProps) => {
               <Users className="h-5 w-5 text-primary" />
               Soft Skills
             </CardTitle>
+            <CardDescription>Essential interpersonal skills</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap gap-2">
               {insights.softSkills.map((skill, index) => (
-                <Badge
-                  key={index}
-                  variant="outline"
-                  className={getImportanceBadgeColor(skill.importance)}
-                >
+                <Badge key={index} variant="outline" className={getImportanceBadgeColor(skill.importance)}>
                   {skill.skill}
                 </Badge>
               ))}
@@ -317,32 +281,29 @@ export const AIInsights = ({ careerField }: AIInsightsProps) => {
           </CardContent>
         </Card>
 
-        {/* Top Locations */}
-        <Card className="hover:shadow-lg transition-shadow">
+        {/* Market Demand & Locations */}
+        <Card className="hover:shadow-lg transition-shadow md:col-span-2">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <MapPin className="h-5 w-5 text-primary" />
-              Top Hiring Locations
+              Market Overview
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap gap-2">
-              {insights.topLocations.map((location, index) => (
-                <Badge key={index} variant="secondary">
-                  {location}
-                </Badge>
-              ))}
+          <CardContent className="space-y-4">
+            <div>
+              <h4 className="font-semibold mb-2">Top Hiring Locations</h4>
+              <div className="flex flex-wrap gap-2">
+                {insights.topLocations.map((location, index) => (
+                  <Badge key={index} variant="secondary">
+                    {location}
+                  </Badge>
+                ))}
+              </div>
             </div>
-          </CardContent>
-        </Card>
-
-        {/* Market Demand */}
-        <Card className="hover:shadow-lg transition-shadow">
-          <CardHeader>
-            <CardTitle>Market Demand</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">{insights.marketDemand}</p>
+            <div>
+              <h4 className="font-semibold mb-2">Market Demand</h4>
+              <p className="text-sm text-muted-foreground">{insights.marketDemand}</p>
+            </div>
           </CardContent>
         </Card>
       </div>
