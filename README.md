@@ -394,6 +394,4 @@ For issues and questions:
 - Check existing documentation
 - Review code comments
 
----
 
-**Built with ❤️ using Lovable.dev**
