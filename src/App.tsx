@@ -9,7 +9,6 @@ import FieldDetail from "./pages/FieldDetail";
 import Bookmarks from "./pages/Bookmarks";
 import Compare from "./pages/Compare";
 import Scraper from "./pages/Scraper";
-import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,7 +26,6 @@ const App = () => (
           <Route path="/bookmarks" element={<Bookmarks />} />
           <Route path="/compare" element={<Compare />} />
           <Route path="/scraper" element={<Scraper />} />
-          <Route path="/settings" element={<Settings />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

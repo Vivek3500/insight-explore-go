@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Bookmark, Compass, Globe, Settings } from 'lucide-react';
+import { Bookmark, Compass, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -44,16 +44,6 @@ export const Navigation = () => {
             <Link to="/bookmarks" className="flex items-center gap-2">
               <Bookmark className="h-4 w-4" />
               <span className="hidden sm:inline">Saved</span>
-            </Link>
-          </Button>
-          <Button
-            variant={location.pathname === '/settings' ? 'default' : 'ghost'}
-            asChild
-            size="sm"
-          >
-            <Link to="/settings" className="flex items-center gap-2">
-              <Settings className="h-4 w-4" />
-              <span className="hidden sm:inline">Settings</span>
             </Link>
           </Button>
         </div>
