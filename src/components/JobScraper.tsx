@@ -45,6 +45,7 @@ export const JobScraper = () => {
   const [careerField, setCareerField] = useState('');
   const [location, setLocation] = useState('India');
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingDataset, setIsLoadingDataset] = useState(true);
   const [insights, setInsights] = useState<CareerInsights | null>(null);
   const [datasetJobs, setDatasetJobs] = useState<JobData[]>([]);
   const [allJobs, setAllJobs] = useState<JobData[]>([]);
@@ -53,8 +54,10 @@ export const JobScraper = () => {
 
   useEffect(() => {
     const loadDataset = async () => {
+      setIsLoadingDataset(true);
       const jobs = await parseJobDataset();
       setAllJobs(jobs);
+      setIsLoadingDataset(false);
     };
     loadDataset();
   }, []);
@@ -383,22 +386,33 @@ export const JobScraper = () => {
 
             {/* Dataset Search Tab */}
             <TabsContent value="dataset" className="space-y-4">
-              <form onSubmit={handleDatasetSearch} className="space-y-4">
-                <div className="space-y-2">
-                  <label htmlFor="dataset-careerField" className="text-sm font-medium">
-                    Search Career Field
-                  </label>
-                  <Input
-                    id="dataset-careerField"
-                    type="text"
-                    value={careerField}
-                    onChange={(e) => setCareerField(e.target.value)}
-                    placeholder="e.g., Data Analyst, Android Developer"
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    Searching {allJobs.length} real job listings from Indian companies
-                  </p>
+              {isLoadingDataset ? (
+                <div className="flex items-center justify-center py-8 space-x-2">
+                  <Loader2 className="h-5 w-5 animate-spin text-primary" />
+                  <span className="text-muted-foreground">Loading job dataset...</span>
                 </div>
+              ) : (
+                <>
+                  <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
+                    <Database className="h-4 w-4 text-primary" />
+                    <span className="text-sm font-medium">
+                      Dataset loaded: {allJobs.length.toLocaleString()} job listings
+                    </span>
+                  </div>
+
+                  <form onSubmit={handleDatasetSearch} className="space-y-4">
+                    <div className="space-y-2">
+                      <label htmlFor="dataset-careerField" className="text-sm font-medium">
+                        Search Career Field
+                      </label>
+                      <Input
+                        id="dataset-careerField"
+                        type="text"
+                        value={careerField}
+                        onChange={(e) => setCareerField(e.target.value)}
+                        placeholder="e.g., Data Analyst, Android Developer"
+                      />
+                    </div>
 
                 <div className="flex flex-wrap gap-2">
                   <span className="text-sm text-muted-foreground w-full">Popular fields:</span>
@@ -415,11 +429,13 @@ export const JobScraper = () => {
                   ))}
                 </div>
 
-                <Button type="submit" className="w-full">
-                  <Database className="mr-2 h-4 w-4" />
-                  Search Dataset
-                </Button>
-              </form>
+                    <Button type="submit" className="w-full">
+                      <Database className="mr-2 h-4 w-4" />
+                      Search Dataset
+                    </Button>
+                  </form>
+                </>
+              )}
 
               {datasetAnalysis && datasetJobs.length > 0 && (
                 <div className="space-y-4 mt-6">
