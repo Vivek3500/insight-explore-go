@@ -33,7 +33,7 @@ export const Navigation = () => {
           >
             <Link to="/scraper" className="flex items-center gap-2">
               <Globe className="h-4 w-4" />
-              <span className="hidden sm:inline">Scraper</span>
+              <span className="hidden sm:inline">Search</span>
             </Link>
           </Button>
           <Button
