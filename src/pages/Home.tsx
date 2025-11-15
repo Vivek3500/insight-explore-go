@@ -19,7 +19,7 @@ const Home = () => {
               <span className="text-primary"> Match Your Goals</span>
             </h1>
             <p className="text-lg sm:text-xl text-muted-foreground mb-8 leading-relaxed">
-              Get instant insights into job roles, required skills, salary ranges, and growth trends across diverse career fields. Start your journey in under 10 minutes.
+              Get instant insights into job roles, required skills, salary ranges, and growth trends across diverse career fields. Start your journey in under 10 seconds.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg" className="text-base group shadow-soft hover:shadow-hover">
