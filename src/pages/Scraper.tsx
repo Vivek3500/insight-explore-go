@@ -9,7 +9,7 @@ const Scraper = () => {
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">🔍 Career Search & Insights</h1>
           <p className="text-muted-foreground">
-            ML-powered job market analysis using Google Gemini AI with real-time data
+            ML-powered job market analysis using real-time data
           </p>
         </div>
         <JobScraper />
