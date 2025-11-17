@@ -57,6 +57,13 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        hero: {
+          "bg-light": "hsl(var(--hero-bg-light))",
+          "bg-lighter": "hsl(var(--hero-bg-lighter))",
+        },
+        "accent-cyan": "hsl(var(--accent-cyan))",
+        "text-dark": "hsl(var(--text-dark))",
+        "text-gray": "hsl(var(--text-gray))",
       },
       borderRadius: {
         lg: "var(--radius)",

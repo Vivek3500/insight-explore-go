@@ -1,40 +1,13 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Compass, TrendingUp, BookOpen } from 'lucide-react';
+import { TrendingUp, BookOpen, Compass, ArrowRight } from 'lucide-react';
+import InteractiveHero from '@/components/InteractiveHero';
 
 const Home = () => {
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden py-20 sm:py-32">
-        <div className="absolute inset-0 bg-gradient-hero opacity-5" />
-        <div className="container mx-auto px-4 relative">
-          <div className="max-w-3xl mx-auto text-center animate-fade-in">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
-              <Compass className="h-4 w-4" />
-              Discover Your Future Career
-            </div>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-6 leading-tight">
-              Explore Careers That
-              <span className="text-primary"> Match Your Goals</span>
-            </h1>
-            <p className="text-lg sm:text-xl text-muted-foreground mb-8 leading-relaxed">
-              Get instant insights into job roles, required skills, salary ranges, and growth trends across diverse career fields. Start your journey in under 10 seconds.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg" className="text-base group shadow-soft hover:shadow-hover">
-                <Link to="/fields" className="flex items-center gap-2">
-                  Start Exploring
-                  <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="text-base">
-                <Link to="/fields">Browse All Fields</Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Interactive Hero Section with Fog Effect */}
+      <InteractiveHero />
 
       {/* Features Section */}
       <section className="py-16 sm:py-24 bg-muted/30">
