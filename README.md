@@ -392,6 +392,5 @@ This project is open source and available under the MIT License.
 For issues and questions:
 - Open a GitHub issue
 - Check existing documentation
-- Review code comments
 
 
